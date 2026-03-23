@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import csv
+from tkinter import filedialog
 from Modelos.gestor_json import leer_datos
 import json
 
@@ -67,11 +69,11 @@ class Dashboard(tk.Toplevel):
             self.tabla.column(col, anchor="center")
         self.tabla.pack(fill="both", expand=True)
 
-        # --- BOTONERA ---
+        #  BOTONERA 
         btn_container = tk.Frame(self, bg="#f8fafc", pady=25)
         btn_container.pack(fill="x")
 
-        # 1. Botón Nuevo (Visible para todos)
+        # 1. Botón Nuevo 
         self.btn_nuevo = tk.Button(
             btn_container, text="+ Nuevo Registro", 
             bg="#10b981", fg="white", font=("Arial", 10, "bold"),
@@ -80,7 +82,7 @@ class Dashboard(tk.Toplevel):
         )
         self.btn_nuevo.pack(side="left", padx=(40, 10))
 
-        # 2. Botón Eliminar (Visible para ADMIN y TECNICO)
+        #  Botón Eliminar
         if self.rol in ["admin", "tecnico"]:
             self.btn_eliminar = tk.Button(
                 btn_container, text="Eliminar Seleccionado", 
@@ -90,7 +92,7 @@ class Dashboard(tk.Toplevel):
             )
             self.btn_eliminar.pack(side="left", padx=10)
 
-        # 3. Botón Gestionar Usuarios (SÓLO ADMIN)
+        # 3. Botón Gestionar Usuarios
         if self.rol == "admin":
             self.btn_usuarios = tk.Button(
                 btn_container, text="👥 Gestionar Usuarios", 
@@ -101,6 +103,13 @@ class Dashboard(tk.Toplevel):
             self.btn_usuarios.pack(side="right", padx=40)
 
         self.cargar_datos()
+        self.btn_exportar = tk.Button(
+            btn_container, text="📊 Exportar CSV", 
+            bg="#64748b", fg="white", font=("Arial", 10, "bold"),
+            relief="flat", padx=20, pady=10, cursor="hand2",
+            command=self.exportar_csv
+        )
+        self.btn_exportar.pack(side="left", padx=10)
 
     # --- FUNCIONES ---
     def cerrar_sesion(self):
@@ -161,3 +170,34 @@ class Dashboard(tk.Toplevel):
                 messagebox.showinfo("Éxito", f"Registro {ip_borrar} eliminado.")
             except Exception as e:
                 messagebox.showerror("Error", f"No se pudo eliminar: {e}")
+
+    def exportar_csv(self):
+        # 1. Obtener los datos actuales
+        registros = leer_datos("registros")
+        
+        if not registros:
+            messagebox.showwarning("Exportar", "No hay datos para exportar.")
+            return
+
+        # 2. Preguntar dónde
+        archivo = filedialog.asksaveasfilename(
+            defaultextension=".csv",
+            filetypes=[("Archivo CSV", "*.csv")],
+            title="Guardar reporte de Red"
+        )
+
+        if archivo:
+            try:
+                # 3. Escribir el archivo CSV
+                with open(archivo, mode='w', newline='', encoding='utf-8') as f:
+                    # Definimos las columnas (Cabeceras)
+                    columnas = ["ip", "mac", "dispositivo", "departamento"]
+                    writer = csv.DictWriter(f, fieldnames=columnas)
+                    
+                    writer.writeheader() # Escribe los títulos
+                    writer.writerows(registros) # Escribe todos los datos
+                
+                messagebox.showinfo("Éxito", f"Reporte exportado correctamente en:\n{archivo}")
+            
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo exportar el archivo: {e}")
