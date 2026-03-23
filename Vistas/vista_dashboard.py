@@ -42,11 +42,10 @@ class Dashboard(tk.Toplevel):
         tk.Label(header, text=user_text, fg="#cbd5e1", bg="#0f172a", 
                  font=("Arial", 9)).pack(side="right", padx=30)
 
-        # --- CONTENEDOR PRINCIPAL ---
         container = tk.Frame(self, bg="#f8fafc", padx=40, pady=10)
         container.pack(fill="both", expand=True)
 
-        # --- 🔍 BÚSQUEDA ---
+        #  BÚSQUEDA 
         search_frame = tk.Frame(container, bg="#f8fafc")
         search_frame.pack(fill="x", pady=(10, 20))
 
@@ -58,7 +57,7 @@ class Dashboard(tk.Toplevel):
         self.ent_buscar.pack(side="left", padx=10, fill="x", expand=True, ipady=8)
         self.ent_buscar.bind("<KeyRelease>", lambda e: self.filtrar_datos())
 
-        # --- TABLA (TREEVIEW) ---
+        # TABLA 
         self.tabla = ttk.Treeview(container, columns=("IP", "MAC", "DISP", "DEPTO"), show="headings")
         self.tabla.heading("IP", text="DIRECCIÓN IP")
         self.tabla.heading("MAC", text="DIRECCIÓN MAC")
@@ -95,7 +94,7 @@ class Dashboard(tk.Toplevel):
         # 3. Botón Gestionar Usuarios
         if self.rol == "admin":
             self.btn_usuarios = tk.Button(
-                btn_container, text="👥 Gestionar Usuarios", 
+                btn_container, text=" Gestionar Usuarios", 
                 bg="#6366f1", fg="white", font=("Arial", 10, "bold"),
                 relief="flat", padx=20, pady=10, cursor="hand2",
                 command=self.abrir_gestion_usuarios
@@ -104,14 +103,14 @@ class Dashboard(tk.Toplevel):
 
         self.cargar_datos()
         self.btn_exportar = tk.Button(
-            btn_container, text="📊 Exportar CSV", 
+            btn_container, text="Exportar CSV", 
             bg="#64748b", fg="white", font=("Arial", 10, "bold"),
             relief="flat", padx=20, pady=10, cursor="hand2",
             command=self.exportar_csv
         )
         self.btn_exportar.pack(side="left", padx=10)
 
-    # --- FUNCIONES ---
+    #  FUNCIONES 
     def cerrar_sesion(self):
         if messagebox.askyesno("Cerrar Sesión", "¿Desea salir de la cuenta actual?"):
             self.destroy() 
@@ -179,7 +178,6 @@ class Dashboard(tk.Toplevel):
             messagebox.showwarning("Exportar", "No hay datos para exportar.")
             return
 
-        # 2. Preguntar dónde
         archivo = filedialog.asksaveasfilename(
             defaultextension=".csv",
             filetypes=[("Archivo CSV", "*.csv")],
@@ -188,14 +186,14 @@ class Dashboard(tk.Toplevel):
 
         if archivo:
             try:
-                # 3. Escribir el archivo CSV
+                
                 with open(archivo, mode='w', newline='', encoding='utf-8') as f:
                     # Definimos las columnas (Cabeceras)
                     columnas = ["ip", "mac", "dispositivo", "departamento"]
                     writer = csv.DictWriter(f, fieldnames=columnas)
                     
-                    writer.writeheader() # Escribe los títulos
-                    writer.writerows(registros) # Escribe todos los datos
+                    writer.writeheader() 
+                    writer.writerows(registros) 
                 
                 messagebox.showinfo("Éxito", f"Reporte exportado correctamente en:\n{archivo}")
             
