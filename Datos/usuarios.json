@@ -1,0 +1,37 @@
+[
+    {
+        "usuario": "admin",
+        "clave": "1234",
+        "rol": "admin"
+    },
+    {
+        "usuario": "tecnico1",
+        "clave": "pasa",
+        "rol": "tecnico"
+    },
+    {
+        "usuario": "javier",
+        "clave": "1234",
+        "rol": "tecnico"
+    },
+    {
+        "usuario": "javierescobar",
+        "clave": "321",
+        "rol": "admin"
+    },
+    {
+        "usuario": "sorto",
+        "clave": "4321",
+        "rol": "admin"
+    },
+    {
+        "usuario": "sorto2",
+        "clave": "2222",
+        "rol": "tecnico"
+    },
+    {
+        "usuario": "Nestor",
+        "clave": "123456",
+        "rol": "admin"
+    }
+]
