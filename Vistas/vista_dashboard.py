@@ -71,7 +71,7 @@ class Dashboard(tk.Toplevel):
         btn_container = tk.Frame(self, bg="#f8fafc", pady=25)
         btn_container.pack(fill="x")
 
-        # 1. Botón Nuevo (Todos lo ven)
+        # 1. Botón Nuevo
         self.btn_nuevo = tk.Button(
             btn_container, text="+ Nuevo Registro", 
             bg="#10b981", fg="white", font=("Arial", 10, "bold"),
@@ -80,9 +80,8 @@ class Dashboard(tk.Toplevel):
         )
         self.btn_nuevo.pack(side="left", padx=(40, 10))
 
-        # --- BLOQUE ADMIN ---
+        # boton borrar
         if self.rol == "admin":
-            # Eliminar
             self.btn_eliminar = tk.Button(
                 btn_container, text="Eliminar Seleccionado", 
                 bg="#ef4444", fg="white", font=("Arial", 10, "bold"),
@@ -91,7 +90,7 @@ class Dashboard(tk.Toplevel):
             )
             self.btn_eliminar.pack(side="left", padx=10)
 
-            # Exportar (Solo Admin)
+            # Exportar
             self.btn_exportar = tk.Button(
                 btn_container, text="Exportar CSV", 
                 bg="#64748b", fg="white", font=("Arial", 10, "bold"),
@@ -124,7 +123,6 @@ class Dashboard(tk.Toplevel):
     def abrir_gestion_usuarios(self):
         try:
             from Vistas.vista_usuarios import VistaUsuarios
-            # ESTO ES LO QUE ARREGLA TU ERROR DE LA IMAGEN:
             VistaUsuarios(self, self.usuario_nombre)
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo abrir la gestión: {e}")
